@@ -1,1 +1,6 @@
 ﻿php4dvd/env
+php4dvd/venv
+php4dvd/.idea
+php4dvd/.pytest_cache
+php4dvd/__pycache__
+*.log
