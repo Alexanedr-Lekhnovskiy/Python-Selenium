@@ -1,6 +1,6 @@
 class User(object):
 
-    def __init__(self, username=None, password=None, email=None):
+    def __init__(self, username="", password="", email=""):
         self.username = username
         self.password = password
         self.email = email
@@ -11,4 +11,7 @@ class User(object):
 
     @classmethod
     def random(cls):
-        return cls(username="user", password="12345")
+        from random import randint
+        return cls(username="user" + str(randint(0, 1000000)),
+                   password="pass" + str(randint(0, 1000000)),
+                   email="email" + str(randint(0, 1000000)) + "@test.com")
