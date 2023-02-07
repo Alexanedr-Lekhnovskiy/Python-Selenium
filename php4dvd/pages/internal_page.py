@@ -25,5 +25,3 @@ class InternalPage(Page):
     @property
     def is_this_page(self):
         return self.is_element_visible((By.CSS_SELECTOR, "[title='Home']"))
-
-

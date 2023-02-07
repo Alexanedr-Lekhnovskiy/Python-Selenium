@@ -19,4 +19,3 @@ class LoginPage(Page):
     @property
     def is_this_page(self):
         return self.is_element_visible((By.CLASS_NAME, 'login-box-body'))
-

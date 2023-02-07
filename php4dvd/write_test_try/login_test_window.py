@@ -17,35 +17,45 @@ auth = (
 
 
 def interceptor(request):
-
     if request.host == 'ipamm.ale.local':
         request.headers['Authorization'] = f'Basic {auth}'
         print(request.headers['Authorization'])
 
-    # if request.url == 'https://ipamm.ale.local/pam/idp/External/Challenge?scheme=Negotiate':
-    #     request.headers['Authorization'] = f'Basic {auth}'
-    #     print(request.headers['Authorization'])
-    #     pritnt()
-
-
-
-
-
 
 def test_setup():
+    # В конфиге idp нужно настроить
+    #   "DirectoryMechanism": "Local",
+    #   "Authentication": "Ldap",
+    #
+    #   Также ещё придется отдельно настроить секцию LDAP
+    #   "Ldap": {
+    #     "Domain": "pam-ad1.local",
+    #     "Username": "pamadmin",
+    #     "Password": "QWEqwe123",
+    #     "Port": 636,
+    #     "SecureSocketLayer": true,
+    #     "AuthType": "Basic"
+    #   },
+
+    username = 'admin'
+    password = 'QWEqwe123'
     options = webdriver.ChromeOptions()
     options.add_argument("--ignore-certificate-errors")
     driver = webdriver.Chrome()
+    # driver = webdriver.Firefox()
 
     time.sleep(2)
     # driver.request_interceptor = interceptor
-    driver.get("https://ipamm.ale.local/pam/idp/Account/Login")
-    autoit.win_wait_active("",30)
-    autoit.send("Admin{TAB}")
-    autoit.send("QWEqwe123{Enter}")
-
-
-    driver.maximize_window()
+    # driver.get("https://ipamm.pam-ad1.local/pam/idp/Account/Login")
+    driver.get("https://pamadmin:QWEqwe123@ipamm.pam-ad1.local/pam/mc")
+    # driver.maximize_window()
+    # driver.implicitly_wait(10)
+    # autoit.win_wait_active("",30)
+    # autoit.send(f"{username}""{TAB}")
+    # autoit.send(f"{password}""{Enter}")
+    # driver.get('https://ipamm.pam-ad1.local/pam/mc')
+    # link_resources = driver.find_element(By.ID, 'icon-filled-server')
+    # link_resources.click()
 
     for request in driver.requests:
         print(request.headers)
@@ -56,26 +66,5 @@ def test_setup():
                 request.response
             )
 
-    time.sleep(100)
+    time.sleep(2)
     driver.quit()
-
-##Trash
-
-
-# driver.implicitly_wait(0.5)
-#
-#
-# basic_auth = [
-#     "browserstack_executor", {
-#         "action": "sendBasicAuth",
-#         "arguments": {
-#             "timeout": "<time in milliseconds>",
-#             "username": "admin",
-#             "password": "QWEqwe123",
-#         }
-#     },
-# ]
-#
-# y = json.dumps(basic_auth)
-#
-# driver.execute_script( y )

@@ -9,43 +9,28 @@ from selenium.webdriver.common.alert import Alert
 import base64
 import autoit
 
-auth = (
-    base64.encodebytes('locaAdmin : QWEqwe123'.encode())
-        .decode()
-        .strip()
-)
-
-
-def interceptor(request):
-
-    if request.host == 'ipamm.ale.local':
-        request.headers['Authorization'] = f'Basic {auth}'
-        print(request.headers['Authorization'])
-
-    # if request.url == 'https://ipamm.ale.local/pam/idp/External/Challenge?scheme=Negotiate':
-    #     request.headers['Authorization'] = f'Basic {auth}'
-    #     print(request.headers['Authorization'])
-    #     pritnt()
-
-
-
-
-
 
 def test_setup():
-    options = webdriver.ChromeOptions()
-    options.add_argument("--ignore-certificate-errors")
+    # options = webdriver.ChromeOptions()
+    # options.add_argument("--ignore-certificate-errors")
     driver = webdriver.Chrome()
+
+    # driver = webdriver.Firefox()
 
     time.sleep(2)
     # driver.request_interceptor = interceptor
-    driver.get("https://ipamm.ale.local/pam/idp/Account/Login")
-    autoit.win_wait_active("",30)
-    autoit.send("Admin{TAB}")
-    autoit.send("QWEqwe123{Enter}")
-
-
+    driver.get("https://redos-ipamm.pam-ad1.local/mc")
     driver.maximize_window()
+    driver.implicitly_wait(2)
+    username = driver.find_element(By.ID, 'Username')
+    username.send_keys('Admin')
+    password = driver.find_element(By.ID, 'Password')
+    password.send_keys("QWEqwe123")
+    button_login = driver.find_element(By.CSS_SELECTOR, '.btn-primary')
+    button_login.click()
+    link_resources = driver.find_element(By.ID, 'icon-filled-server')
+    link_resources.click()
+    time.sleep(100)
 
     for request in driver.requests:
         print(request.headers)

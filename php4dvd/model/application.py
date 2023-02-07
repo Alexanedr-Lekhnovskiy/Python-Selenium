@@ -45,10 +45,6 @@ class Application(object):
     #             self.logout()
     #     self.login(user)
 
-
-
-
-
     def is_logged_in(self):
         return self.internal_page.is_this_page
 
